@@ -11,6 +11,13 @@ import UIKit
     private var labels = [UILabel]()
     var selectedView = UIView()
     
+    var labelColor = UIColor.blackColor()
+    var labelFont = UIFont (name: "HelveticaNeue", size: 18)
+    var selectedFont = UIFont (name: "HelveticaNeue-Bold", size: 18)
+    var selectedColor = UIColor.redColor()
+    var underlineColor = UIColor.blackColor()
+    var showUnderline = true
+    
     var items:[String] = ["Label 1", "Label 2", "Label 3"] {
         didSet{
             setupLabels()
@@ -55,7 +62,8 @@ import UIKit
             label.textAlignment = .Center
             label.layer.borderWidth = 0
             label.backgroundColor = UIColor.clearColor()
-            label.textColor = UIColor.blackColor()
+            label.textColor = labelColor
+            label.font = labelFont
             
             self.addSubview(label)
             labels.append(label)
@@ -107,13 +115,23 @@ import UIKit
     }
     
     func displayNewSelectedIndex(){
-        let label = labels[selectedIndex]
-       
-        let bottomBorder = CALayer()
-        bottomBorder.backgroundColor = UIColor.blackColor().CGColor
-        bottomBorder.frame = CGRectMake(0, label.frame.size.height, label.frame.size.width, 1)
+        labels.map {
+            $0.textColor = labelColor
+            $0.font = labelFont
+        }
         
-        self.selectedView.layer.addSublayer(bottomBorder)
+        let label = labels[selectedIndex]
+        label.textColor = selectedColor
+        label.font = selectedFont
+       
+        if showUnderline{
+            let bottomBorder = CALayer()
+            bottomBorder.backgroundColor = underlineColor.CGColor
+            bottomBorder.frame = CGRectMake(0, label.frame.size.height, label.frame.size.width, 1)
+            self.selectedView.layer.addSublayer(bottomBorder)
+        }
+        
+        
         self.selectedView.frame = label.frame
     }
     
